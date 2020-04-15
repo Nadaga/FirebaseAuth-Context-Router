@@ -1,25 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useMemo } from "react";
+import "./App.css";
+import UserAuth from "./container/UserAuth";
+import { Route, BrowserRouter } from "react-router-dom";
+import { useState } from "react";
+import GlobalState from "./container/GlobalContext";
 
 function App() {
+  const [auth, setAuth] = useState(null);
+
+  //Memo
+  const providerValue = useMemo(() => ({ auth, setAuth }), [auth, setAuth]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <GlobalState.Provider value={providerValue}>
+      <BrowserRouter>
+        <Route exact path="/" component={UserAuth} />
+        {/* <Route exact path="/login" component={UserAuth} />
+        <Route exact path="/signup" component={UserAuth} /> */}
+      </BrowserRouter>
+    </GlobalState.Provider>
   );
 }
 
